@@ -12,6 +12,7 @@ from tensorflow.contrib.layers import fully_connected
 # <codecell>
 
 from Scripts.CreateTrainingBatches import CreateTrainingBatches
+from Scripts.Attention import create_attention
 
 # <codecell>
 
@@ -61,6 +62,7 @@ X_embeddings = tf.nn.embedding_lookup(tf_embedding_matrix, X, name='X_embeddings
 # <codecell>
 
 n_neurons = 50
+attention_n_neurons = 50
 learning_rate = 0.01
 
 # <codecell>
@@ -69,7 +71,10 @@ with tf.variable_scope('RNN', initializer=tf.contrib.layers.xavier_initializer()
     fw_cell = tf.contrib.rnn.DropoutWrapper(tf.contrib.rnn.GRUCell(num_units=n_neurons), output_keep_prob=tf_keep_prob)
     bw_cell = tf.contrib.rnn.DropoutWrapper(tf.contrib.rnn.GRUCell(num_units=n_neurons), output_keep_prob=tf_keep_prob)
     outputs, states = tf.nn.bidirectional_dynamic_rnn(fw_cell, bw_cell, X_embeddings, dtype=tf.float32)
-    doc_vectors = tf.concat(states, 1, name='conc_outputs')
+with tf.variable_scope('Attention'):
+    conc_outputs = tf.concat(outputs, 2, name='conc_outputs')
+    doc_vectors, normalized_attention_scores = create_attention(conc_outputs, attention_n_neurons)
+    
 
 logits = fully_connected(doc_vectors, 1, activation_fn=None)
 prob = tf.nn.sigmoid(logits, name='prob')
@@ -112,11 +117,3 @@ for i in range(2000):
             saver.save(sess, os.path.join('Models', 'tf_models','model.ckpt'))
             highest_validation_accuracy = validation_accuracy
         print('-----------------------------')
-
-# <codecell>
-
-
-
-# <codecell>
-
-
