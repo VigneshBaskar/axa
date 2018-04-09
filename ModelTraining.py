@@ -89,7 +89,9 @@ from tensorflow.python import debug as tf_debug
 
 init = tf.global_variables_initializer()
 saver = tf.train.Saver()
+sess = tf.InteractiveSession()
 sess = tf_debug.LocalCLIDebugWrapperSession(sess)
+sess.add_tensor_filter("has_inf_or_nan", tf_debug.has_inf_or_nan)
 init.run()
 
 # <codecell>
