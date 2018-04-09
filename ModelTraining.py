@@ -69,7 +69,7 @@ with tf.variable_scope('RNN', initializer=tf.contrib.layers.xavier_initializer()
     fw_cell = tf.contrib.rnn.DropoutWrapper(tf.contrib.rnn.GRUCell(num_units=n_neurons), output_keep_prob=tf_keep_prob)
     bw_cell = tf.contrib.rnn.DropoutWrapper(tf.contrib.rnn.GRUCell(num_units=n_neurons), output_keep_prob=tf_keep_prob)
     outputs, states = tf.nn.bidirectional_dynamic_rnn(fw_cell, bw_cell, X_embeddings, dtype=tf.float32)
-    doc_vectors = tf.concat(states, 1, name='conc_outputs')
+    doc_vectors = tf.reduce_max(tf.concat(outputs, 2, name='conc_outputs'),1)
 
 logits = fully_connected(doc_vectors, 1, activation_fn=None)
 prob = tf.nn.sigmoid(logits, name='prob')
@@ -112,11 +112,3 @@ for i in range(2000):
             saver.save(sess, os.path.join('Models', 'tf_models','model.ckpt'))
             highest_validation_accuracy = validation_accuracy
         print('-----------------------------')
-
-# <codecell>
-
-
-
-# <codecell>
-
-
