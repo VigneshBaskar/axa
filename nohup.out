@@ -1,0 +1,109 @@
+2018-04-08 20:53:47.395311: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2018-04-08 20:53:47.395344: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2018-04-08 20:53:47.395349: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2018-04-08 20:53:47.395351: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2018-04-08 20:53:47.395354: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+Epoch 0 Loss 0.7419639
+Negative accuracy 0.046875
+Positive accuracy 0.96875
+Accuracy 0.5078125
+Saved model with highest accuracy
+-----------------------------
+Epoch 100 Loss 0.68943065
+Negative accuracy 0.515625
+Positive accuracy 0.4609375
+Accuracy 0.48828125
+-----------------------------
+Epoch 200 Loss 0.6384562
+Negative accuracy 0.61328125
+Positive accuracy 0.703125
+Accuracy 0.658203125
+Saved model with highest accuracy
+-----------------------------
+Epoch 300 Loss 0.60033953
+Negative accuracy 0.6328125
+Positive accuracy 0.69140625
+Accuracy 0.662109375
+Saved model with highest accuracy
+-----------------------------
+Epoch 400 Loss 0.56673443
+Negative accuracy 0.5859375
+Positive accuracy 0.71875
+Accuracy 0.65234375
+-----------------------------
+Epoch 500 Loss 0.5884224
+Negative accuracy 0.6015625
+Positive accuracy 0.7734375
+Accuracy 0.6875
+Saved model with highest accuracy
+-----------------------------
+Epoch 600 Loss 0.5996295
+Negative accuracy 0.67578125
+Positive accuracy 0.59765625
+Accuracy 0.63671875
+-----------------------------
+Epoch 700 Loss 0.61993754
+Negative accuracy 0.6640625
+Positive accuracy 0.58984375
+Accuracy 0.626953125
+-----------------------------
+Epoch 800 Loss 0.60150295
+Negative accuracy 0.60546875
+Positive accuracy 0.609375
+Accuracy 0.607421875
+-----------------------------
+Epoch 900 Loss 0.6574907
+Negative accuracy 0.58203125
+Positive accuracy 0.61328125
+Accuracy 0.59765625
+-----------------------------
+Epoch 1000 Loss 0.66897684
+Negative accuracy 0.484375
+Positive accuracy 0.609375
+Accuracy 0.546875
+-----------------------------
+Epoch 1100 Loss 0.6707493
+Negative accuracy 0.3515625
+Positive accuracy 0.71875
+Accuracy 0.53515625
+-----------------------------
+Epoch 1200 Loss 0.6660391
+Negative accuracy 0.56640625
+Positive accuracy 0.56640625
+Accuracy 0.56640625
+-----------------------------
+Epoch 1300 Loss 0.66988224
+Negative accuracy 0.5
+Positive accuracy 0.5859375
+Accuracy 0.54296875
+-----------------------------
+Epoch 1400 Loss 0.66320294
+Negative accuracy 0.43359375
+Positive accuracy 0.6015625
+Accuracy 0.517578125
+-----------------------------
+Epoch 1500 Loss 0.6718509
+Negative accuracy 0.43359375
+Positive accuracy 0.66796875
+Accuracy 0.55078125
+-----------------------------
+Epoch 1600 Loss 0.67244077
+Negative accuracy 0.4765625
+Positive accuracy 0.609375
+Accuracy 0.54296875
+-----------------------------
+Epoch 1700 Loss 0.6880086
+Negative accuracy 0.42578125
+Positive accuracy 0.5703125
+Accuracy 0.498046875
+-----------------------------
+Epoch 1800 Loss 0.68938243
+Negative accuracy 0.55859375
+Positive accuracy 0.46484375
+Accuracy 0.51171875
+-----------------------------
+Epoch 1900 Loss 0.67942023
+Negative accuracy 0.546875
+Positive accuracy 0.5546875
+Accuracy 0.55078125
+-----------------------------
