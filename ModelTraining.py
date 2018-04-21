@@ -67,12 +67,19 @@ learning_rate = 0.01
 
 # <codecell>
 
-with tf.variable_scope('RNN', initializer=tf.contrib.layers.xavier_initializer()):
+with tf.variable_scope('RNN-1', initializer=tf.contrib.layers.xavier_initializer()):
     fw_cell = tf.contrib.rnn.DropoutWrapper(tf.contrib.rnn.GRUCell(num_units=n_neurons), output_keep_prob=tf_keep_prob)
     bw_cell = tf.contrib.rnn.DropoutWrapper(tf.contrib.rnn.GRUCell(num_units=n_neurons), output_keep_prob=tf_keep_prob)
-    outputs, states = tf.nn.bidirectional_dynamic_rnn(fw_cell, bw_cell, X_embeddings, dtype=tf.float32)
+    outputs_1, states_1 = tf.nn.bidirectional_dynamic_rnn(fw_cell, bw_cell, X_embeddings, dtype=tf.float32)
+    conc_outputs_1 = tf.concat(outputs_1, 2, name='conc_outputs')
+    
+with tf.variable_scope('RNN-2', initializer=tf.contrib.layers.xavier_initializer()):
+    fw_cell = tf.contrib.rnn.DropoutWrapper(tf.contrib.rnn.GRUCell(num_units=n_neurons), output_keep_prob=tf_keep_prob)
+    bw_cell = tf.contrib.rnn.DropoutWrapper(tf.contrib.rnn.GRUCell(num_units=n_neurons), output_keep_prob=tf_keep_prob)
+    outputs_2, states_2 = tf.nn.bidirectional_dynamic_rnn(fw_cell, bw_cell, conc_outputs_1, dtype=tf.float32)
+    
 with tf.variable_scope('Attention'):
-    conc_outputs = tf.concat(outputs, 2, name='conc_outputs')
+    conc_outputs = tf.concat(outputs_2, 2, name='conc_outputs')
     doc_vectors, normalized_attention_scores = create_attention(conc_outputs, attention_n_neurons)
     
 
@@ -88,6 +95,15 @@ with tf.name_scope('train'):
 
 # <codecell>
 
+logdir = os.path.join(os.getcwd(),"{}/run-{}".format("tf_logs", 'model'))
+
+# <codecell>
+
+loss_summary = tf.summary.scalar('loss', loss)
+file_writer = tf.summary.FileWriter(logdir, tf.get_default_graph())
+
+# <codecell>
+
 init = tf.global_variables_initializer()
 saver = tf.train.Saver()
 sess = tf.InteractiveSession()
@@ -96,13 +112,15 @@ init.run()
 # <codecell>
 
 highest_validation_accuracy = 0.5
-for i in range(2000):
+for i in range(10000):
     x_train_samples, y_train_samples = create_training_batches_object.create_training_data()
     
-    _, np_prob, np_y, np_loss = sess.run([training_op, prob, y, loss],
+    _, np_prob, np_y, np_loss, np_loss_summary = sess.run([training_op, prob, y, loss, loss_summary],
                                               feed_dict={X: x_train_samples,
                                                          y: y_train_samples,
                                                          tf_keep_prob: 0.8})
+    file_writer.add_summary(np_loss_summary, i)
+
     if i%100==0:
         print('Epoch', i, 'Loss',np_loss)
         x_valid_samples, y_valid_samples = create_training_batches_object.create_validation_data()
