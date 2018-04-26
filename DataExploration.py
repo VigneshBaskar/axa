@@ -59,16 +59,6 @@ id_arrays = np.array(id_lists)
 
 # <codecell>
 
-def return_actual_text(x, rev_vocab_dict):
-    actual_text = " ".join([rev_vocab_dict[word_id] for word_id in x])
-    return actual_text
-
-# <codecell>
-
-w2v_model.wv.most_similar('grant')
-
-# <codecell>
-
 X_train_and_valid, X_test, y_train_and_valid, y_test = train_test_split(id_arrays, y, test_size=0.15, random_state=42)
 X_train, X_valid, y_train, y_valid = train_test_split(X_train_and_valid, y_train_and_valid, test_size=0.15, random_state=42)
 
@@ -82,9 +72,24 @@ with open(os.path.join('Data','data_X_y.p'), 'wb') as handle:
 
 # <codecell>
 
-training_params = {'embedding_matrix':embedding_matrix, 'vocab_size':len(vocab_dict)}
+training_params = {'embedding_matrix':embedding_matrix, 'vocab_size':len(vocab_dict), 
+                   'vocab_dict':vocab_dict, 'rev_vocab_dict':rev_vocab_dict}
 with open(os.path.join('Data','training_params.p'), 'wb') as handle:
     pickle.dump(training_params, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+# <codecell>
+
+w2v_model.save(os.path.join('Data','w2v_model.h5'))
+
+# <codecell>
+
+def return_actual_text(x, rev_vocab_dict):
+    actual_text = " ".join([rev_vocab_dict[word_id] if rev_vocab_dict[word_id]!='my_dummy' for word_id in x])
+    return actual_text
+
+# <codecell>
+
+w2v_model.wv.most_similar('grant')
 
 # <codecell>
 

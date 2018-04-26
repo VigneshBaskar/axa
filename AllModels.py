@@ -27,8 +27,30 @@ with open(os.path.join('Data','training_params.p'), 'rb') as handle:
 
 # <codecell>
 
+from Scripts.Word2VecUtilities import Word2VecUtilities
+
+# <codecell>
+
+w2v_model= Word2VecUtilities.load_word2vector_model(os.path.join('Data','w2v_model.h5'))
+
+# <codecell>
+
 X_train, X_valid, X_test = [data_X_y['X_train'],data_X_y['X_valid'], data_X_y['X_test']]
 y_train, y_valid, y_test = [data_X_y['y_train'],data_X_y['y_valid'], data_X_y['y_test']]
+
+# <codecell>
+
+def return_actual_text(x, rev_vocab_dict):
+    actual_text = " ".join([rev_vocab_dict[word_id] for word_id in x  if rev_vocab_dict[word_id]!='my_dummy'])
+    return actual_text
+
+# <codecell>
+
+rev_vocab_dict = training_params['rev_vocab_dict']
+
+# <codecell>
+
+return_actual_text(X_train[0], rev_vocab_dict), y_train[0]
 
 # <codecell>
 
@@ -66,7 +88,9 @@ tf.reset_default_graph()
 learning_rate = 0.01
 
 doc_vectors = tf.placeholder(dtype=tf.float32,shape=[None, vocab_size], name='doc_vectors')
-logits = fully_connected(doc_vectors, 1, activation_fn=None)
+weights = tf.Variable(tf.random_uniform([doc_vectors.get_shape().as_list()[1], 1], minval=-1.0, maxval=1.0), name='weights')
+bias = tf.zeros(1, name='bias')
+logits = tf.matmul(doc_vectors, weights) + bias
 prob = tf.nn.sigmoid(logits, name='prob')
 
 # <markdowncell>
@@ -210,9 +234,8 @@ learning_rate = 0.01
 # <codecell>
 
 with tf.variable_scope('RNN', initializer=tf.contrib.layers.xavier_initializer()):
-    fw_cell = tf.contrib.rnn.DropoutWrapper(tf.contrib.rnn.GRUCell(num_units=n_neurons), output_keep_prob=tf_keep_prob)
-    bw_cell = tf.contrib.rnn.DropoutWrapper(tf.contrib.rnn.GRUCell(num_units=n_neurons), output_keep_prob=tf_keep_prob)
-    outputs, states = tf.nn.bidirectional_dynamic_rnn(fw_cell, bw_cell, X_embeddings, dtype=tf.float32)
+    rnn_cell = tf.contrib.rnn.GRUCell(num_units=n_neurons)
+    outputs, states = tf.nn.dynamic_rnn(rnn_cell, X_embeddings, dtype=tf.float32)
     doc_vectors = tf.concat(states, 1, name='conc_outputs')
 
 logits = fully_connected(doc_vectors, 1, activation_fn=None)
@@ -235,7 +258,7 @@ init.run()
 # <codecell>
 
 highest_validation_accuracy = 0.5
-for i in range(2000):
+for i in range(500):
     x_train_samples, y_train_samples = create_training_batches_object.create_training_data()
     
     _, np_prob, np_y, np_loss = sess.run([training_op, prob, y, loss],
@@ -256,7 +279,3 @@ for i in range(2000):
             saver.save(sess, os.path.join('Models', 'tf_models','model.ckpt'))
             highest_validation_accuracy = validation_accuracy
         print('-----------------------------')
-
-# <codecell>
-
-
