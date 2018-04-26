@@ -112,11 +112,3 @@ for i in range(2000):
             saver.save(sess, os.path.join('Models', 'tf_models','model.ckpt'))
             highest_validation_accuracy = validation_accuracy
         print('-----------------------------')
-
-# <codecell>
-
-
-
-# <codecell>
-
-

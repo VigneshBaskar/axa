@@ -82,7 +82,7 @@ with open(os.path.join('Data','data_X_y.p'), 'wb') as handle:
 
 # <codecell>
 
-training_params = {'embedding_matrix':embedding_matrix}
+training_params = {'embedding_matrix':embedding_matrix, 'vocab_size':len(vocab_dict)}
 with open(os.path.join('Data','training_params.p'), 'wb') as handle:
     pickle.dump(training_params, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
