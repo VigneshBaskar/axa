@@ -16,14 +16,11 @@ from sklearn.preprocessing import MultiLabelBinarizer
 # <codecell>
 
 from Scripts.CreateTrainingBatches import CreateTrainingBatches
-from Scripts.Utils import one_hot_encode_matrix
 
 # <codecell>
 
 with open(os.path.join('Data','data_X_y.p'), 'rb') as handle:
     data_X_y = pickle.load(handle)
-
-# <codecell>
 
 with open(os.path.join('Data','training_params.p'), 'rb') as handle:
     training_params = pickle.load(handle)
@@ -61,10 +58,6 @@ y = tf.placeholder(tf.float32, [None, 1], name='y')
 # <codecell>
 
 learning_rate = 0.01
-
-# <codecell>
-
-
 
 # <codecell>
 
@@ -112,7 +105,3 @@ for i in range(2000):
             saver.save(sess, os.path.join('Models', 'tf_models','model.ckpt'))
             highest_validation_accuracy = validation_accuracy
         print('-----------------------------')
-
-# <codecell>
-
-2+4+6
